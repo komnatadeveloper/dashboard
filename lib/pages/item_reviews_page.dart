@@ -337,7 +337,7 @@ class _ItemReviewsPageState extends State<ItemReviewsPage>
                         child: Container
                         (
                           margin: EdgeInsets.symmetric(vertical: 10.0, horizontal: 16.0),
-                          child: Text('Happy to hear that!', style: Theme.of(context).textTheme.subhead),
+                          child: Text('Happy to hear that!', style: Theme.of(context).textTheme.subtitle1),
                         ),
                       ),
                     ],

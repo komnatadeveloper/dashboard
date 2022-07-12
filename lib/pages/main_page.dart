@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_sparkline/flutter_sparkline.dart';
+// import 'package:flutter_sparkline/flutter_sparkline.dart';
+import 'package:chart_sparkline/chart_sparkline.dart';
+
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 
 import 'shop_items_page.dart';
@@ -20,7 +22,7 @@ class _MainPageState extends State<MainPage>
   ];
 
   static final List<String> chartDropdownItems = [ 'Last 7 days', 'Last month', 'Last year' ];
-  String actualDropdown = chartDropdownItems[0];
+  String? actualDropdown = chartDropdownItems[0];
   int actualChart = 0;
 
   @override
@@ -51,11 +53,11 @@ class _MainPageState extends State<MainPage>
           )
         ],
       ),
-      body: StaggeredGridView.count(
+      body: StaggeredGrid.count(
         crossAxisCount: 2,
         crossAxisSpacing: 12.0,
         mainAxisSpacing: 12.0,
-        padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+        // padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
         children: <Widget>[
           _buildTile(
             Padding
@@ -177,11 +179,15 @@ class _MainPageState extends State<MainPage>
                           (
                             isDense: true,
                             value: actualDropdown,
-                            onChanged: (String value) => setState(()
-                            {
-                              actualDropdown = value;
-                              actualChart = chartDropdownItems.indexOf(value); // Refresh the chart
-                            }),
+                            onChanged: (  value ) { 
+                              if ( value != null ) {
+                                setState(() {
+                                  actualDropdown = value.toString();
+                                  actualChart = chartDropdownItems.indexOf(value.toString()); // Refresh the chart
+                                });
+                              }
+                              return;
+                            },
                             items: chartDropdownItems.map((String title)
                             {
                               return DropdownMenuItem
@@ -243,18 +249,18 @@ class _MainPageState extends State<MainPage>
             onTap: () => Navigator.of(context).push(MaterialPageRoute(builder: (_) => ShopItemsPage())),
           )
         ],
-        staggeredTiles: [
-          StaggeredTile.extent(2, 110.0),
-          StaggeredTile.extent(1, 180.0),
-          StaggeredTile.extent(1, 180.0),
-          StaggeredTile.extent(2, 220.0),
-          StaggeredTile.extent(2, 110.0),
-        ],
+        // staggeredTiles: [
+        //   StaggeredGridTile.extent(crossAxisCellCount: 2, mainAxisExtent: 110.0),
+        //   StaggeredGridTile.extent(crossAxisCellCount : 1, mainAxisExtent: 180.0),
+        //   StaggeredGridTile.extent(crossAxisCellCount: 1, mainAxisExtent:180.0),
+        //   StaggeredGridTile.extent(crossAxisCellCount: 2, mainAxisExtent:220.0),
+        //   StaggeredGridTile.extent(crossAxisCellCount: 2, mainAxisExtent:110.0),
+        // ],
       )
     );
   }
 
-  Widget _buildTile(Widget child, {Function() onTap}) {
+  Widget _buildTile(Widget child, {Function()? onTap}) {
     return Material(
       elevation: 14.0,
       borderRadius: BorderRadius.circular(12.0),
